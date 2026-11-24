@@ -33,7 +33,8 @@ Running it twice in one day won't make a second playlist.
 ## How it works
 
 1. Reads your `Gym` playlist to learn what you like.
-2. Picks a genre for each song, avoiding repeats from recent mixes.
+2. Picks a different genre from it for each song, avoiding repeats from recent
+   mixes.
 3. Generates the songs. Suno returns 2 similar songs per call, so it listens to
    both and keeps one.
 4. Rules out songs with vocals or low energy.
@@ -53,5 +54,5 @@ and stops if the first call costs more than 15.
 | To change | Edit |
 |---|---|
 | What future mixes sound like | Your `Gym` playlist on Suno |
-| Genres, BPMs, and sounds to avoid | [flavours.md](.agents/skills/gym-mix/flavours.md) |
+| Sounds to avoid | [avoid-list.md](.agents/skills/gym-mix/avoid-list.md) |
 | Number of songs, length, model, names, and credit limits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |

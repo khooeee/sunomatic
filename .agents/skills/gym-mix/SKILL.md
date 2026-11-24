@@ -54,7 +54,7 @@ Edit these to change every mix.
    names). Create any that are missing.
 5. List songs in `Gym` created today. `created_at` is UTC, so convert it first.
    If there are any, an earlier run stopped partway: keep them and make only the
-   missing songs, in flavours not already used today. Two songs with the same
+   missing songs, in genres not already used today. Two songs with the same
    `created_at` came from the same call.
 
 ### 2. Learn what the user likes
@@ -66,33 +66,32 @@ likes, other playlists, or the rest of the library.
    stop and report. Read every song with `playlists-list-clips`, paging to the end.
 2. Instrumental songs count most. From songs with vocals, use the genre,
    instruments, and energy, and ignore the voices and lyrics.
-3. From each song's `metadata.style`, note which flavours appear most, and which
-   instruments, textures, and arrangement moves recur. Work a few into today's
-   styles without copying any one song.
-4. If a genre there is missing from flavours.md, it can be used as a flavour too.
-   Take its BPM from the song, and mention it in the report.
+3. From each song's `metadata.style`, note its genre, BPM, instruments, textures,
+   and arrangement moves.
 
 Also read the most recent `Gym YYYY-MM-DD` playlists, up to 3, only to see which
-flavours were used and which styles not to repeat.
+genres were used and which styles not to repeat.
 
-### 3. Pick a flavour and write a style for each song
+### 3. Pick a genre and write a style for each song
 
-Each song gets its own flavour from [flavours.md](flavours.md). Every song is high
-energy. There is no warm-up, cool-down, or set order.
+Every song is high energy. There is no warm-up, cool-down, or set order.
 
-Pick the flavours like this:
+Pick the genres like this:
 
-- Use a different flavour for every song.
-- Use at least three that were not in the last mix.
-- Otherwise choose at random, leaning towards flavours common in the taste
-  playlist.
+- Take them from the taste playlist.
+- Use a different genre for every song. Close cousins count as the same genre. If
+  there are too few, blend two.
+- Use at least three that were not in the last mix, if there are enough.
+- Otherwise choose at random, leaning towards genres common in the taste playlist.
+- Skip a slow genre, or use its instruments at a faster tempo.
 
-Shuffle them, so similar flavours and tempos are not back to back.
+Shuffle them, so similar genres and tempos are not back to back.
 
-Pick a BPM inside the flavour's range. Then write each style in 300–600 characters,
-in this order:
+Pick a BPM that suits the genre, close to the taste songs' BPM and never below 110.
+Work in a few sounds from the taste songs, without copying any one song. Write each
+style in 300–600 characters, in this order:
 
-1. Flavour, exact BPM, and "instrumental"
+1. Genre, exact BPM, and "instrumental"
 2. Drums, bass, and two or three lead sounds
 3. How the track moves: opening, build, first peak, a change halfway (new lead,
    rhythm, or key), a bigger second peak, ending
@@ -106,7 +105,7 @@ different lead instrument and a short, original title.
 Call `audio-create` once per song, one at a time and in the shuffled order, with:
 
 - `instrumental: true`, `style`, `title`
-- `negative_style`: the base list plus the Avoid list in flavours.md
+- `negative_style`: everything in [avoid-list.md](avoid-list.md), comma-separated
 - `model`, `controls`, and `duration` from Settings
 - `duration_strict: false`, so songs end naturally instead of cutting off
 - `workspace_id`: the `Gym` workspace
@@ -145,7 +144,7 @@ call adds nothing. Do not regenerate it.
 
 ### 6. Build the playlist
 
-1. Create the playlist with `playlists-create` (private) and list the flavours in
+1. Create the playlist with `playlists-create` (private) and list the genres in
    one line. If today's empty playlist already exists, reuse it.
 2. Add today's kept songs in the shuffled order with one `playlists-add-clips` call. Use
    new songs only. Check `failed`, and retry those once.
@@ -154,9 +153,9 @@ call adds nothing. Do not regenerate it.
 
 Keep it short:
 
-- Playlist link, flavours, number of songs, total minutes
+- Playlist link, genres, number of songs, total minutes
 - Credits spent and credits left
 - Anything ruled out, unchecked, or failed
 
 Remind the user how to steer the next mix: add songs they like to the taste
-playlist to get more like them, or add to the Avoid list in flavours.md to get fewer.
+playlist to get more like them, or add sounds to avoid-list.md to get fewer.
