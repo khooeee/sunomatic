@@ -2,16 +2,16 @@
 name: gym-mix
 description: >-
   Makes today's gym playlist on Suno: 10 new high-energy instrumental songs in mixed
-  genres and workout order, in a private dated playlist. Spends Suno credits. Use
-  only when the user asks to make their gym mix or gym playlist, or invokes gym-mix.
+  genres, in a private dated playlist. Spends Suno credits. Use only when the user
+  asks to make their gym mix or gym playlist, or invokes gym-mix.
 ---
 
 # Gym Mix
 
 Make one private Suno playlist for today's workout, using the Suno MCP tools.
 
-Running this skill approves **one `audio-create` call per block** (10) and up to
-**2 retries** for failed blocks. Anything beyond that needs the user. If nobody is
+Running this skill approves **one `audio-create` call per song** (10) and up to
+**2 retries** for failed calls. Anything beyond that needs the user. If nobody is
 there to ask, stop and report.
 
 Suno returns 2 similar songs per call. Use **only the better one**. The other
@@ -23,6 +23,7 @@ Edit these to change every mix.
 
 | Setting | Value |
 |---|---|
+| Songs per mix | 10 |
 | Playlist name | `Gym YYYY-MM-DD` (local date) |
 | Workspace for songs used in mixes | `Gym` |
 | Workspace for unused songs | `Gym Spares` |
@@ -53,7 +54,7 @@ Edit these to change every mix.
    names). Create any that are missing.
 5. List songs in `Gym` created today. `created_at` is UTC, so convert it first.
    If there are any, an earlier run stopped partway: keep them and make only the
-   missing blocks, in flavours not already used today. Two songs with the same
+   missing songs, in flavours not already used today. Two songs with the same
    `created_at` came from the same call.
 
 ### 2. Learn what the user likes
@@ -74,34 +75,22 @@ likes, other playlists, or the rest of the library.
 Also read the most recent `Gym YYYY-MM-DD` playlists, up to 3, only to see which
 flavours were used and which styles not to repeat.
 
-### 3. Pick a flavour and write a style for each block
+### 3. Pick a flavour and write a style for each song
 
-Each block is one call and adds one new song. Each gets its own flavour from
-[flavours.md](flavours.md). To make more new songs, add rows to this table.
-
-| Block | Purpose | BPM | Feel |
-|---|---|---|---|
-| 1 | Warm-up | 112–128 | Building, confident, groove first |
-| 2 | Lift | 126–142 | Heavy, steady, locked-in |
-| 3 | Lift | 126–142 | Funkier and looser |
-| 4 | Lift | 126–142 | Dark and tense |
-| 5 | Lift | 130–142 | The heaviest of the lifts |
-| 6 | Peak | 145–155 | Step up: bigger drums, no let-up |
-| 7 | Peak | 150–170 | Faster and more aggressive |
-| 8 | Peak | 145–165 | Huge and heavy, a short breather in speed only |
-| 9 | Peak | 165–190 | The fastest and most frantic song in the mix |
-| 10 | Finisher | 126–165 | Triumphant, wide, still driving |
+Each song gets its own flavour from [flavours.md](flavours.md). Every song is high
+energy. There is no warm-up, cool-down, or set order.
 
 Pick the flavours like this:
 
-- Use a different flavour for every block, each listed as fitting its block.
+- Use a different flavour for every song.
 - Use at least three that were not in the last mix.
-- Do not give a block the same flavour it had in the last mix.
 - Otherwise choose at random, leaning towards flavours common in the taste
   playlist.
 
-Pick a BPM inside both the block's range and the flavour's range. Then write each
-style in 300–600 characters, in this order:
+Shuffle them, so similar flavours and tempos are not back to back.
+
+Pick a BPM inside the flavour's range. Then write each style in 300–600 characters,
+in this order:
 
 1. Flavour, exact BPM, and "instrumental"
 2. Drums, bass, and two or three lead sounds
@@ -109,30 +98,30 @@ style in 300–600 characters, in this order:
    rhythm, or key), a bigger second peak, ending
 4. The mix: low end, width, grit
 
-Get to full energy within 20 seconds, except in block 1. No long breakdowns.
-Give every block a different lead instrument and a short, original title.
+Get to full energy within 20 seconds. No long breakdowns. Give every song a
+different lead instrument and a short, original title.
 
 ### 4. Generate
 
-Call `audio-create` once per block, one at a time and in block order, with:
+Call `audio-create` once per song, one at a time and in the shuffled order, with:
 
 - `instrumental: true`, `style`, `title`
 - `negative_style`: the base list plus the Avoid list in flavours.md
 - `model`, `controls`, and `duration` from Settings
 - `duration_strict: false`, so songs end naturally instead of cutting off
 - `workspace_id`: the `Gym` workspace
-- `idempotency_key`: `gym-YYYY-MM-DD-block-N`
+- `idempotency_key`: `gym-YYYY-MM-DD-song-N`
 
 Do not wait for a song to finish before making the next call.
 
-After block 1, read `account-usage` again. If the call cost more than the
+After the first call, read `account-usage` again. If the call cost more than the
 maximum, stop and report.
 
-A `409` means that block was already made today. Reuse its songs.
+A `409` means that call was already made today. Reuse its songs.
 
 Wait with `audio-wait` (`until: complete`, up to 12 ids per call) until every
-song is settled. If one song in a block failed, use the other. If both failed,
-retry that block once with `-retry` added to its key.
+song is settled. If one song from a call failed, use the other. If both failed,
+retry that call once with `-retry` added to its key.
 
 ### 5. Keep one song per call
 
@@ -152,13 +141,13 @@ Choose between the two like this:
 3. If a check failed, choose from what you know and report the song as unchecked.
 
 Move every song you did not keep to `Gym Spares`. If neither song passes, that
-block adds nothing. Do not regenerate it.
+call adds nothing. Do not regenerate it.
 
 ### 6. Build the playlist
 
 1. Create the playlist with `playlists-create` (private) and list the flavours in
    one line. If today's empty playlist already exists, reuse it.
-2. Add today's kept songs in block order with one `playlists-add-clips` call. Use
+2. Add today's kept songs in the shuffled order with one `playlists-add-clips` call. Use
    new songs only. Check `failed`, and retry those once.
 
 ### 7. Report
