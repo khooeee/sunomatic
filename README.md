@@ -12,6 +12,7 @@ Each run makes one private playlist named `Gym YYYY-MM-DD`:
 
 - 10 new instrumental songs, aimed at 3:30 each, so about 35 minutes
 - A different genre for every song
+- 8 songs based on your taste, and 2 wildcards in genres outside it
 - High energy throughout, in shuffled order
 
 Your taste comes from one place: the songs in your Suno playlist named `Gym`.
@@ -33,12 +34,12 @@ Running it twice in one day won't make a second playlist.
 ## How it works
 
 1. Reads your `Gym` playlist to learn what you like.
-2. Picks a different genre from it for each song, avoiding repeats from recent
-   mixes.
+2. Picks a different genre from it for 8 songs, avoiding repeats from recent mixes.
+   Makes up 2 wildcards: still high energy with no vocals, but outside your taste.
 3. Generates the songs. Suno returns 2 similar songs per call, so it listens to
    both and keeps one.
 4. Rules out songs with vocals or low energy.
-5. Builds the playlist.
+5. Builds the playlist, and tells you which songs are the wildcards.
 
 Songs it uses go in a `Gym` workspace, and the rest go in `Gym Spares`. It never
 changes your `Gym` playlist.
@@ -60,5 +61,5 @@ listener doesn't hear it, so the skill can't check for it.
 | To change | Edit |
 |---|---|
 | What future mixes sound like | Your `Gym` playlist on Suno |
-| Sounds to avoid | [avoid-list.md](.agents/skills/gym-mix/avoid-list.md) |
-| Number of songs, length, model, Max Mode, names, and minimum credits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |
+| Sounds to avoid (wildcards only follow the vocal ones) | [avoid-list.md](.agents/skills/gym-mix/avoid-list.md) |
+| Number of songs, wildcards, length, model, Max Mode, names, and minimum credits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |

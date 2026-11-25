@@ -1,7 +1,7 @@
 # Avoid list
 
-Sounds to keep out of every song. The skill sends this list to Suno as the negative
-style. Edit freely, one per line.
+Sounds to keep out of every song, except that wildcards only follow the vocal ones.
+The skill sends this list to Suno as the negative style. Edit freely, one per line.
 
 - vocals
 - singing

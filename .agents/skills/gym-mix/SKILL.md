@@ -24,6 +24,7 @@ Edit these to change every mix.
 | Setting | Value |
 |---|---|
 | Songs per mix | 10 |
+| Wildcards | 2 of the 10 |
 | Playlist name | `Gym YYYY-MM-DD` (local date) |
 | Workspace for songs used in mixes | `Gym` |
 | Workspace for unused songs | `Gym Spares` |
@@ -55,7 +56,8 @@ Edit these to change every mix.
 5. List songs in `Gym` created today. `created_at` is UTC, so convert it first.
    If there are any, an earlier run stopped partway: keep them and make only the
    missing songs, in genres not already used today. Two songs with the same
-   `created_at` came from the same call.
+   `created_at` came from the same call. Songs in genres outside the taste
+   playlist were wildcards.
 
 ### 2. Learn what the user likes
 
@@ -76,7 +78,7 @@ genres were used and which styles not to repeat.
 
 Every song is high energy. There is no warm-up, cool-down, or set order.
 
-Pick the genres like this:
+Pick the genres like this, except for the wildcards:
 
 - Take them from the taste playlist.
 - Use a different genre for every song. Close cousins count as the same genre. If
@@ -85,7 +87,16 @@ Pick the genres like this:
 - Otherwise choose at random, leaning towards genres common in the taste playlist.
 - Skip a slow genre, or use its instruments at a faster tempo.
 
-Shuffle them, so similar genres and tempos are not back to back.
+The wildcards are songs the user would not expect. Be creative:
+
+- Pick a genre or an unusual blend that is not in the taste playlist, and not a
+  close cousin of anything in it. Make the two very different from each other.
+- Do not repeat a wildcard from the recent mixes.
+- They must have no vocals and enough energy for a workout. Nothing else about the
+  sound is fixed: the BPM, style, and arrangement rules below do not apply.
+
+Shuffle all the songs, so similar genres and tempos are not back to back. The
+wildcards can go anywhere.
 
 Pick a BPM that suits the genre, close to the taste songs' BPM and never below 110.
 Work in a few sounds from the taste songs, without copying any one song. Write each
@@ -105,7 +116,8 @@ different lead instrument and a short, original title.
 Call `audio-create` once per song, one at a time and in the shuffled order, with:
 
 - `instrumental: true`, `style`, `title`
-- `negative_style`: everything in [avoid-list.md](avoid-list.md), comma-separated
+- `negative_style`: everything in [avoid-list.md](avoid-list.md), comma-separated.
+  For wildcards, only its vocal entries (singing, rap, speech, choir)
 - `model`, `max_mode`, `controls`, and `duration` from Settings
 - `duration_strict: false`, so songs end naturally instead of cutting off
 - `workspace_id`: the `Gym` workspace
@@ -152,6 +164,7 @@ call adds nothing. Do not regenerate it.
 Keep it short:
 
 - Playlist link, genres, number of songs, total minutes
+- The titles of the wildcards, with their genres. Say so if one was ruled out
 - Credits spent and credits left
 - Anything ruled out, unchecked, or failed
 
