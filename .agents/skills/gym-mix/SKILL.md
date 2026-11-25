@@ -11,8 +11,8 @@ description: >-
 Make one private Suno playlist for today's workout, using the Suno MCP tools.
 
 Running this skill approves **one `audio-create` call per song** (10) and up to
-**2 retries** for failed calls. Anything beyond that needs the user. If nobody is
-there to ask, stop and report.
+**2 retries** for failed calls, all in Max Mode. Anything beyond that needs the
+user. If nobody is there to ask, stop and report.
 
 Suno returns 2 similar songs per call. Use **only the better one**. The other
 never goes in a mix.
@@ -29,14 +29,14 @@ Edit these to change every mix.
 | Workspace for unused songs | `Gym Spares` |
 | Taste playlist (read only) | `Gym` (exact name, not the dated ones) |
 | Model | `v6` |
-| Target length | 360 seconds per song (Suno's maximum) |
+| Max Mode | On for every song (`max_mode: true`) |
+| Target length | 210 seconds (3:30) per song. Longer `v6` songs turn garbled |
 | Controls | `style_influence` 0.8, `weirdness` 0.35, `variety` 0 |
-| Minimum credits to start | 180 |
-| Maximum credits per call | 15 |
+| Minimum credits to start | 240 |
 
 ## Never
 
-- Use Max Mode, download songs, or make anything public.
+- Download songs or make anything public.
 - Edit or remove songs from any playlist other than today's.
 - Name an artist, song, film, show, or game in a style or title.
 
@@ -106,17 +106,15 @@ Call `audio-create` once per song, one at a time and in the shuffled order, with
 
 - `instrumental: true`, `style`, `title`
 - `negative_style`: everything in [avoid-list.md](avoid-list.md), comma-separated
-- `model`, `controls`, and `duration` from Settings
+- `model`, `max_mode`, `controls`, and `duration` from Settings
 - `duration_strict: false`, so songs end naturally instead of cutting off
 - `workspace_id`: the `Gym` workspace
 - `idempotency_key`: `gym-YYYY-MM-DD-song-N`
 
 Do not wait for a song to finish before making the next call.
 
-After the first call, read `account-usage` again. If the call cost more than the
-maximum, stop and report.
-
-A `409` means that call was already made today. Reuse its songs.
+A `409` means that call was already made today. Reuse its songs. If Max Mode is
+refused, stop and report. Do not make songs without it.
 
 Wait with `audio-wait` (`until: complete`, up to 12 ids per call) until every
 song is settled. If one song from a call failed, use the other. If both failed,

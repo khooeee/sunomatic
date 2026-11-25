@@ -10,7 +10,7 @@ instructions and does the work through the Suno MCP.
 
 Each run makes one private playlist named `Gym YYYY-MM-DD`:
 
-- 10 new instrumental songs, aimed at 6 minutes each, so about an hour
+- 10 new instrumental songs, aimed at 3:30 each, so about 35 minutes
 - A different genre for every song
 - High energy throughout, in shuffled order
 
@@ -18,7 +18,7 @@ Your taste comes from one place: the songs in your Suno playlist named `Gym`.
 
 ## Requirements
 
-- A Suno plan that includes the `v6` model and advanced controls
+- A Suno plan that includes the `v6` model, Max Mode, and advanced controls
 - The Suno MCP, signed in to your Suno account
 - A Suno playlist named exactly `Gym`, with songs you like working out to
 
@@ -45,9 +45,15 @@ changes your `Gym` playlist.
 
 ## Cost
 
-About 100 Suno credits per run, or 120 with both retries. This assumes 10 credits
-per call and hasn't been measured yet. A run won't start with under 180 credits,
-and stops if the first call costs more than 15.
+About 200 Suno credits per run, or 240 with both retries. Every song uses Max Mode,
+which reportedly doubles the cost to 20 per call. That hasn't been measured yet;
+without Max Mode a call costs 10, whatever the song length. A run won't start with
+under 240 credits.
+
+## Why 3:30
+
+At 6 minutes, most `v6` songs turned garbled after 4 to 5 minutes. Suno's own
+listener doesn't hear it, so the skill can't check for it.
 
 ## Change it
 
@@ -55,4 +61,4 @@ and stops if the first call costs more than 15.
 |---|---|
 | What future mixes sound like | Your `Gym` playlist on Suno |
 | Sounds to avoid | [avoid-list.md](.agents/skills/gym-mix/avoid-list.md) |
-| Number of songs, length, model, names, and credit limits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |
+| Number of songs, length, model, Max Mode, names, and minimum credits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |
