@@ -25,6 +25,7 @@ Edit these to change every mix.
 |---|---|
 | Songs per mix | 10 |
 | Wildcards | 2 of the 10 |
+| Songs with a new instrument | 3 of the fused songs |
 | Playlist name | `Gym YYYY-MM-DD` (local date) |
 | Workspace for songs used in mixes | `Gym` |
 | Workspace for unused songs | `Gym Spares` |
@@ -78,12 +79,14 @@ genres were used and which styles not to repeat.
 
 Every song is high energy. There is no warm-up, cool-down, or set order.
 
-Pick the genres like this, except for the wildcards:
+Make every song except the wildcards a fusion of two taste songs:
 
-- Take them from the taste playlist.
-- Use a different genre for every song. Close cousins count as the same genre. If
-  there are too few, blend two.
-- Use at least three that were not in the last mix, if there are enough.
+- Pick two taste songs in different genres, such as surf rock and big beat. Take
+  the base genre and groove from one, and signature sounds or arrangement moves
+  from the other.
+- Use each genre at most once per mix. Close cousins count as the same genre. If
+  there are too few, reuse a genre, but never a pair.
+- Use at least three genres that were not in the last mix, if there are enough.
 - Otherwise choose at random, leaning towards genres common in the taste playlist.
 - Skip a slow genre, or use its instruments at a faster tempo.
 
@@ -95,14 +98,22 @@ The wildcards are songs the user would not expect. Be creative:
 - They must have no vocals and enough energy for a workout. Nothing else about the
   sound is fixed: the BPM, style, and arrangement rules below do not apply.
 
+Give a few fused songs a new instrument, as many as Settings says:
+
+- Pick a real instrument the user has likely never heard in their music, such as
+  hurdy-gurdy, duduk, or cimbalom. It must not appear in any taste song's style
+  or in the recent mixes, and each song gets a different one.
+- Make it one of the lead sounds and give it a featured part, such as the main
+  hook or the halfway change, so it is clearly heard.
+
 Shuffle all the songs, so similar genres and tempos are not back to back. The
 wildcards can go anywhere.
 
-Pick a BPM that suits the genre, close to the taste songs' BPM and never below 110.
-Work in a few sounds from the taste songs, without copying any one song. Write each
-style in 300–600 characters, in this order:
+Pick a BPM that suits the fusion, between the two songs' BPMs where possible and
+never below 110. Take sounds and moves, not melodies, so neither song is copied.
+Write each style in 300–600 characters, in this order:
 
-1. Genre, exact BPM, and "instrumental"
+1. The fused genre, exact BPM, and "instrumental"
 2. Drums, bass, and two or three lead sounds
 3. How the track moves: opening, build, first peak, a change halfway (new lead,
    rhythm, or key), a bigger second peak, ending
@@ -141,13 +152,17 @@ free.
 > from 1 to 10. End with a JSON block with vocals (true/false), energy, quality,
 > and bpm.
 
+For a song with a new instrument, also ask whether that instrument is clearly
+heard, and add `instrument_heard` (true/false) to the JSON block.
+
 Choose between the two like this:
 
 1. Rule out a song with vocals or with energy below 6. Chopped vocal samples are
    fine.
-2. Keep the one with more energy. Break ties by quality, then by the BPM closest
+2. If only one take clearly features the new instrument, keep that one.
+3. Keep the one with more energy. Break ties by quality, then by the BPM closest
    to the one you asked for.
-3. If a check failed, choose from what you know and report the song as unchecked.
+4. If a check failed, choose from what you know and report the song as unchecked.
 
 Move every song you did not keep to `Gym Spares`. If neither song passes, that
 call adds nothing. Do not regenerate it.
@@ -164,6 +179,8 @@ call adds nothing. Do not regenerate it.
 Keep it short:
 
 - Playlist link, genres, number of songs, total minutes
+- The two taste songs each song fused
+- Each new instrument and its song. Say so if it was not clearly heard
 - The titles of the wildcards, with their genres. Say so if one was ruled out
 - Credits spent and credits left
 - Anything ruled out, unchecked, or failed

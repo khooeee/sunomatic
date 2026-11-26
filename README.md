@@ -11,8 +11,10 @@ instructions and does the work through the Suno MCP.
 Each run makes one private playlist named `Gym YYYY-MM-DD`:
 
 - 10 new instrumental songs, aimed at 3:30 each, so about 35 minutes
-- A different genre for every song
-- 8 songs based on your taste, and 2 wildcards in genres outside it
+- 8 songs that each fuse two of your songs' styles, such as surf rock with big beat
+- 2 wildcards in genres outside your taste
+- 3 songs featuring an instrument that's new to you, such as hurdy-gurdy
+- No genre used twice
 - High energy throughout, in shuffled order
 
 Your taste comes from one place: the songs in your Suno playlist named `Gym`.
@@ -34,8 +36,10 @@ Running it twice in one day won't make a second playlist.
 ## How it works
 
 1. Reads your `Gym` playlist to learn what you like.
-2. Picks a different genre from it for 8 songs, avoiding repeats from recent mixes.
+2. Pairs up songs from it in different genres and fuses each pair into a new
+   style, for 8 songs, avoiding repeats from recent mixes.
    Makes up 2 wildcards: still high energy with no vocals, but outside your taste.
+   Gives 3 songs a lead instrument you haven't had before.
 3. Generates the songs. Suno returns 2 similar songs per call, so it listens to
    both and keeps one.
 4. Rules out songs with vocals or low energy.
@@ -62,4 +66,4 @@ listener doesn't hear it, so the skill can't check for it.
 |---|---|
 | What future mixes sound like | Your `Gym` playlist on Suno |
 | Sounds to avoid (wildcards only follow the vocal ones) | [avoid-list.md](.agents/skills/gym-mix/avoid-list.md) |
-| Number of songs, wildcards, length, model, Max Mode, names, and minimum credits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |
+| Number of songs, wildcards, new instruments, length, model, Max Mode, names, and minimum credits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |
