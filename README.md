@@ -62,5 +62,5 @@ doesn't listen to songs, so it can't check for it.
 | To change | Edit |
 |---|---|
 | What future mixes sound like | Your `Gym` playlist on Suno |
-| Sounds to avoid (wildcards only follow the vocal ones) | [avoid-list.md](.agents/skills/gym-mix/avoid-list.md) |
+| Sounds to avoid (wildcards only follow the vocal ones) | Avoid list in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |
 | Number of calls, wildcards, new instruments, length, model, Max Mode, names, and minimum credits | Settings in [SKILL.md](.agents/skills/gym-mix/SKILL.md) |

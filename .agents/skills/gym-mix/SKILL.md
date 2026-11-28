@@ -35,6 +35,26 @@ Edit these to change every mix.
 | Controls | `style_influence` 0.8, `weirdness` 0.35, `variety` 0 |
 | Minimum credits to start | 240 |
 
+## Avoid list
+
+Sounds to keep out of every song, sent to Suno as the negative style. Wildcards
+only avoid the vocal ones: the first five. Edit freely, one per line.
+
+- vocals
+- singing
+- rap
+- spoken word
+- choir
+- slow ballad
+- acoustic folk
+- ambient
+- lo-fi
+- trap
+- dubstep
+- long intro
+- long breakdown
+- fade-out
+
 ## Never
 
 - Download songs or make anything public.
@@ -126,8 +146,8 @@ different lead instrument and a short, original title.
 Call `audio-create` once per call, one at a time and in the shuffled order, with:
 
 - `instrumental: true`, `style`, `title`
-- `negative_style`: everything in [avoid-list.md](avoid-list.md), comma-separated.
-  For wildcards, only its vocal entries (singing, rap, speech, choir)
+- `negative_style`: every entry in the Avoid list, comma-separated. For
+  wildcards, only the vocal entries
 - `model`, `max_mode`, `controls`, and `duration` from Settings
 - `duration_strict: false`, so songs end naturally instead of cutting off
 - `workspace_id`: the `Gym` workspace
@@ -174,4 +194,4 @@ Keep it short:
 - Anything failed, or any wildcard that did not finish
 
 Remind the user how to steer the next mix: add songs they like to the taste
-playlist to get more like them, or add sounds to avoid-list.md to get fewer.
+playlist to get more like them, or add sounds to the Avoid list in this skill to get fewer.
