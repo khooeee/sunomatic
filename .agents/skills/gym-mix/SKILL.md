@@ -14,8 +14,8 @@ Running this skill approves **one `audio-create` call per song** (10) and up to
 **2 retries** for failed calls, all in Max Mode. Anything beyond that needs the
 user. If nobody is there to ask, stop and report.
 
-Suno returns 2 similar songs per call. Use **only the better one**. The other
-never goes in a mix.
+Suno returns 2 similar songs per call. Both go in the playlist: the first song
+of every call in part 1, then the second song of every call in part 2.
 
 ## Settings
 
@@ -23,7 +23,7 @@ Edit these to change every mix.
 
 | Setting | Value |
 |---|---|
-| Songs per mix | 10 |
+| Calls per mix | 10 (each gives 2 songs, so 20 in the playlist) |
 | Wildcards | 2 of the 10 |
 | Songs with a new instrument | 3 of the fused songs |
 | Playlist name | `Gym YYYY-MM-DD` (local date) |
@@ -141,34 +141,25 @@ Wait with `audio-wait` (`until: complete`, up to 12 ids per call) until every
 song is settled. If one song from a call failed, use the other. If both failed,
 retry that call once with `-retry` added to its key.
 
-### 5. Keep one song per call
+### 5. Keep both songs from each call
 
-Do not use `audio-listen`. Choose between the two takes from each call with
-`audio-wait` results only:
-
-1. Keep the take whose `duration` is closest to the target length. A take that
-   cut short is the weaker one.
-2. If the durations are within 5 seconds of each other, keep the first one returned.
-
-`instrumental: true` keeps vocals out of every take, so no vocal check is needed.
-Nothing is checked by ear: energy, mix quality, and whether a new instrument is
-heard are all unverified, and the report says so.
-
-Keep every song you did not choose as an unused take, in the order of its call.
-If neither song passes, that call adds nothing. Do not regenerate it.
+Do not use `audio-listen`, and do not choose between takes. Nothing is checked by
+ear: energy, mix quality, and whether a new instrument is heard are all unverified,
+and the report says so. `instrumental: true` keeps vocals out of every take.
 
 ### 6. Build the playlist
 
 1. Create the playlist with `playlists-create` (private) and list the genres in
    one line. If today's empty playlist already exists, reuse it.
-2. Add today's kept songs in the shuffled order, then the unused takes after them,
-   with one `playlists-add-clips` call. Use new songs only. Check `failed`, and retry
-   those once.
-3. Move the unused takes into the `Gym` workspace with `workspaces-update-clips`,
-   so every song from the mix is in `Gym`. Check `skipped`.
-4. Give every title in the playlist a unique name. The two takes from one call
-   often share a title. Rename the chosen take to `<title> 1` and its unused take to
-   `<title> 2`, with `audio-edit`. Check each title is unique before reporting.
+2. Add the first song of each call in call order (part 1), then the second song of
+   each call in call order (part 2), with one `playlists-add-clips` call. Use new
+   songs only. Check `failed`, and retry those once. If one take of a call failed,
+   the other take fills its part 1 slot.
+3. Move every song into the `Gym` workspace with `workspaces-update-clips`. Check
+   `skipped`.
+4. Rename the two takes of each call so each title is unique: part 1 gets
+   `<title> 1` and part 2 gets `<title> 2`, with `audio-edit`. Check that each title
+   is unique before reporting.
 
 ### 7. Report
 
@@ -177,9 +168,8 @@ Keep it short:
 - Playlist link, genres, number of songs, total minutes
 - The two taste songs each song fused
 - Each new instrument and its song (not checked by ear)
-- The titles of the wildcards, with their genres. Say so if one was ruled out
+- The titles of the wildcards, with their genres
 - Credits spent and credits left
-- Unused takes added after the chosen songs, and how many
 - Anything failed, or any wildcard that did not finish
 
 Remind the user how to steer the next mix: add songs they like to the taste

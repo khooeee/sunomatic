@@ -10,7 +10,7 @@ instructions and does the work through the Suno MCP.
 
 Each run makes one private playlist named `Gym YYYY-MM-DD`:
 
-- 10 new instrumental songs, aimed at 3:30 each, so about 35 minutes
+- 20 new instrumental songs, aimed at 3:30 each, so about 70 minutes
 - 8 songs that each fuse two of your songs' styles, such as surf rock with big beat
 - 2 wildcards in genres outside your taste
 - 3 songs featuring an instrument that's new to you, such as hurdy-gurdy
@@ -41,11 +41,10 @@ Running it twice in one day won't make a second playlist.
    Makes up 2 wildcards: still high energy with no vocals, but outside your taste.
    Gives 3 songs a lead instrument you haven't had before.
 3. Generates the songs. Suno returns 2 similar songs per call, and the skill keeps
-   the take closest to the target length. Nothing is checked by ear.
-4. Builds the playlist: the chosen songs first, then the unused takes. Tells you which songs are the wildcards.
+   both. Nothing is checked by ear.
+4. Builds the playlist: the first song of every call, then the second song of every call. Tells you which songs are the wildcards.
 
-All of its songs go in a `Gym` workspace. The playlist lists the chosen songs first,
-then the unused takes. It never changes your `Gym` playlist.
+All of its songs go in a `Gym` workspace. It never changes your `Gym` playlist.
 
 ## Cost
 
