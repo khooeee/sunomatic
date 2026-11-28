@@ -40,19 +40,6 @@ Edit these to change every mix.
 Sounds to keep out of every song, sent to Suno as the negative style. Wildcards
 only avoid the vocal ones: the first five. Edit freely, one per line.
 
-- vocals
-- singing
-- rap
-- spoken word
-- choir
-- slow ballad
-- acoustic folk
-- ambient
-- lo-fi
-- trap
-- dubstep
-- long intro
-- long breakdown
 - fade-out
 
 ## Never
