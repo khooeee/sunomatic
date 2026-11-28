@@ -28,7 +28,6 @@ Edit these to change every mix.
 | Songs with a new instrument | 3 of the fused songs |
 | Playlist name | `Gym YYYY-MM-DD` (local date) |
 | Workspace for songs used in mixes | `Gym` |
-| Workspace for unused songs | `Gym Spares` |
 | Taste playlist (read only) | `Gym` (exact name, not the dated ones) |
 | Model | `v6` |
 | Max Mode | On for every song (`max_mode: true`) |
@@ -52,8 +51,7 @@ Edit these to change every mix.
    - It has songs: report it and stop.
    - It is empty: carry on, and reuse it in step 6.
 3. Read `credits_remaining` with `account-usage`. Stop if it is below the minimum.
-4. Find the `Gym` and `Gym Spares` workspaces with `workspaces-list` (exact
-   names). Create any that are missing.
+4. Find the `Gym` workspace with `workspaces-list` (exact name). Create it if missing.
 5. List songs in `Gym` created today. `created_at` is UTC, so convert it first.
    If there are any, an earlier run stopped partway: keep them and make only the
    missing songs, in genres not already used today. Two songs with the same
@@ -145,34 +143,32 @@ retry that call once with `-retry` added to its key.
 
 ### 5. Keep one song per call
 
-Ask `audio-listen` about both songs from each call, at most 5 at a time. It is
-free.
+Do not use `audio-listen`. Choose between the two takes from each call with
+`audio-wait` results only:
 
-> Is there any singing, rapping, or speech? Rate the energy and the mix quality
-> from 1 to 10. End with a JSON block with vocals (true/false), energy, quality,
-> and bpm.
+1. Keep the take whose `duration` is closest to the target length. A take that
+   cut short is the weaker one.
+2. If the durations are within 5 seconds of each other, keep the first one returned.
 
-For a song with a new instrument, also ask whether that instrument is clearly
-heard, and add `instrument_heard` (true/false) to the JSON block.
+`instrumental: true` keeps vocals out of every take, so no vocal check is needed.
+Nothing is checked by ear: energy, mix quality, and whether a new instrument is
+heard are all unverified, and the report says so.
 
-Choose between the two like this:
-
-1. Rule out a song with vocals or with energy below 6. Chopped vocal samples are
-   fine.
-2. If only one take clearly features the new instrument, keep that one.
-3. Keep the one with more energy. Break ties by quality, then by the BPM closest
-   to the one you asked for.
-4. If a check failed, choose from what you know and report the song as unchecked.
-
-Move every song you did not keep to `Gym Spares`. If neither song passes, that
-call adds nothing. Do not regenerate it.
+Keep every song you did not choose as an unused take, in the order of its call.
+If neither song passes, that call adds nothing. Do not regenerate it.
 
 ### 6. Build the playlist
 
 1. Create the playlist with `playlists-create` (private) and list the genres in
    one line. If today's empty playlist already exists, reuse it.
-2. Add today's kept songs in the shuffled order with one `playlists-add-clips` call. Use
-   new songs only. Check `failed`, and retry those once.
+2. Add today's kept songs in the shuffled order, then the unused takes after them,
+   with one `playlists-add-clips` call. Use new songs only. Check `failed`, and retry
+   those once.
+3. Move the unused takes into the `Gym` workspace with `workspaces-update-clips`,
+   so every song from the mix is in `Gym`. Check `skipped`.
+4. Give every title in the playlist a unique name. The two takes from one call
+   often share a title. Rename the chosen take to `<title> 1` and its unused take to
+   `<title> 2`, with `audio-edit`. Check each title is unique before reporting.
 
 ### 7. Report
 
@@ -180,10 +176,11 @@ Keep it short:
 
 - Playlist link, genres, number of songs, total minutes
 - The two taste songs each song fused
-- Each new instrument and its song. Say so if it was not clearly heard
+- Each new instrument and its song (not checked by ear)
 - The titles of the wildcards, with their genres. Say so if one was ruled out
 - Credits spent and credits left
-- Anything ruled out, unchecked, or failed
+- Unused takes added after the chosen songs, and how many
+- Anything failed, or any wildcard that did not finish
 
 Remind the user how to steer the next mix: add songs they like to the taste
 playlist to get more like them, or add sounds to avoid-list.md to get fewer.

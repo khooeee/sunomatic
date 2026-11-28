@@ -40,13 +40,12 @@ Running it twice in one day won't make a second playlist.
    style, for 8 songs, avoiding repeats from recent mixes.
    Makes up 2 wildcards: still high energy with no vocals, but outside your taste.
    Gives 3 songs a lead instrument you haven't had before.
-3. Generates the songs. Suno returns 2 similar songs per call, so it listens to
-   both and keeps one.
-4. Rules out songs with vocals or low energy.
-5. Builds the playlist, and tells you which songs are the wildcards.
+3. Generates the songs. Suno returns 2 similar songs per call, and the skill keeps
+   the take closest to the target length. Nothing is checked by ear.
+4. Builds the playlist: the chosen songs first, then the unused takes. Tells you which songs are the wildcards.
 
-Songs it uses go in a `Gym` workspace, and the rest go in `Gym Spares`. It never
-changes your `Gym` playlist.
+All of its songs go in a `Gym` workspace. The playlist lists the chosen songs first,
+then the unused takes. It never changes your `Gym` playlist.
 
 ## Cost
 
@@ -57,8 +56,8 @@ under 240 credits.
 
 ## Why 3:30
 
-At 6 minutes, most `v6` songs turned garbled after 4 to 5 minutes. Suno's own
-listener doesn't hear it, so the skill can't check for it.
+At 6 minutes, most `v6` songs turned garbled after 4 to 5 minutes. The skill
+doesn't listen to songs, so it can't check for it.
 
 ## Change it
 
