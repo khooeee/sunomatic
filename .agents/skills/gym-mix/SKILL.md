@@ -1,7 +1,7 @@
 ---
 name: gym-mix
 description: >-
-  Makes today's gym playlist on Suno: 10 new high-energy instrumental songs in mixed
+  Makes today's gym playlist on Suno: 20 new high-energy instrumental songs in mixed
   genres, in a private dated playlist. Spends Suno credits. Use only when the user
   asks to make their gym mix or gym playlist, or invokes gym-mix.
 ---
@@ -10,7 +10,7 @@ description: >-
 
 Make one private Suno playlist for today's workout, using the Suno MCP tools.
 
-Running this skill approves **one `audio-create` call per song** (10) and up to
+Running this skill approves **10 `audio-create` calls** (2 songs each) and up to
 **2 retries** for failed calls, all in Max Mode. Anything beyond that needs the
 user. If nobody is there to ask, stop and report.
 
@@ -24,8 +24,8 @@ Edit these to change every mix.
 | Setting | Value |
 |---|---|
 | Calls per mix | 10 (each gives 2 songs, so 20 in the playlist) |
-| Wildcards | 2 of the 10 |
-| Songs with a new instrument | 3 of the fused songs |
+| Wildcards | 2 of the 10 calls |
+| New instrument | 3 of the 8 fused calls |
 | Playlist name | `Gym YYYY-MM-DD` (local date) |
 | Workspace for songs used in mixes | `Gym` |
 | Taste playlist (read only) | `Gym` (exact name, not the dated ones) |
@@ -54,7 +54,7 @@ Edit these to change every mix.
 4. Find the `Gym` workspace with `workspaces-list` (exact name). Create it if missing.
 5. List songs in `Gym` created today. `created_at` is UTC, so convert it first.
    If there are any, an earlier run stopped partway: keep them and make only the
-   missing songs, in genres not already used today. Two songs with the same
+   missing calls, in genres not already used today. Two songs with the same
    `created_at` came from the same call. Songs in genres outside the taste
    playlist were wildcards.
 
@@ -96,7 +96,8 @@ The wildcards are songs the user would not expect. Be creative:
 - They must have no vocals and enough energy for a workout. Nothing else about the
   sound is fixed: the BPM, style, and arrangement rules below do not apply.
 
-Give a few fused songs a new instrument, as many as Settings says:
+Give some fused calls a new instrument, as many as Settings says (both songs from
+each such call share it):
 
 - Pick a real instrument the user has likely never heard in their music, such as
   hurdy-gurdy, duduk, or cimbalom. It must not appear in any taste song's style
@@ -122,7 +123,7 @@ different lead instrument and a short, original title.
 
 ### 4. Generate
 
-Call `audio-create` once per song, one at a time and in the shuffled order, with:
+Call `audio-create` once per call, one at a time and in the shuffled order, with:
 
 - `instrumental: true`, `style`, `title`
 - `negative_style`: everything in [avoid-list.md](avoid-list.md), comma-separated.
